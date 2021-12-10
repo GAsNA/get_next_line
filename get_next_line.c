@@ -5,53 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rleseur <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 09:02:13 by rleseur           #+#    #+#             */
-/*   Updated: 2021/12/03 09:08:24 by rleseur          ###   ########.fr       */
+/*   Created: 2021/12/10 12:48:26 by rleseur           #+#    #+#             */
+/*   Updated: 2021/12/10 14:46:07 by rleseur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+int	get_read(int fd, char **mem)
+{
+	int		size;
+	char	*buf;
+
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buf)
+		return (0);
+	size = 1;
+	while (!ft_strchr(*mem, '\n') && size)
+	{
+		size = read(fd, buf, BUFFER_SIZE);
+		if (size == -1)
+		{
+			free(buf);
+			return (0);
+		}
+		buf[size] = '\0';
+		*mem = ft_strjoin(*mem, buf);
+	}
+	free(buf);
+	return (size);
+}
+
+char	*get_line(char **str, char **mem)
+{
+	char	*tmp;
+	int		n;
+
+	n = 0;
+	tmp = *mem;
+	while ((*mem)[n] != '\n' && (*mem)[n] != '\0')
+		n++;
+	if (ft_strchr(*mem, '\n'))
+	{
+		*str = ft_substr(*mem, 0, n + 1);
+		*mem = ft_strdup(*mem + n + 1);
+	}
+	else
+	{
+		*str = ft_strdup(tmp);
+		*mem = 0;
+		free(*mem);
+	}
+	free(tmp);
+	return (*str);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	*mem;
-	char		*tmp;
 	char		*str;
-	int			index;
 	int			size;
 
-	if (fd == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!mem)
 		mem = ft_strdup("");
-	str = ft_strdup(mem);
-	index = BUFFER_SIZE;
-	tmp = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!tmp)
-		return (0);
-	size = 0;
-	while (index == BUFFER_SIZE)
-	{
-		size = read(fd, tmp, BUFFER_SIZE);
-		tmp[BUFFER_SIZE] = '\0';
-		index = get_index_backslash_n(tmp);
-		str = ft_strjoin(str, tmp, index);
-		mem = ft_strdup(&tmp[index]);
-	}
+	size = get_read(fd, &mem);
 	if (size == 0)
+	{
+		free(mem);
 		return (0);
+	}
+	get_line(&str, &mem);
 	return (str);
 }
 
-int	main(int ac, char **av)
+/*int	main(int ac, char **av)
 {
-	int		fd;
 	char	*str;
+	int		fd;
 
 	(void) ac;
 	fd = open(av[1], O_RDONLY);
@@ -61,4 +93,4 @@ int	main(int ac, char **av)
 		free(str);
 	}
 	return (0);
-}
+}*/

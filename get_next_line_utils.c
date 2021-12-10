@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rleseur <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 10:14:02 by rleseur           #+#    #+#             */
-/*   Updated: 2021/12/02 15:56:45 by rleseur          ###   ########.fr       */
+/*   Created: 2021/12/10 12:55:28 by rleseur           #+#    #+#             */
+/*   Updated: 2021/12/10 14:10:41 by rleseur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	ft_strlen(char *s)
 
 char	*ft_strdup(char *s)
 {
-	char	*str;
 	int		i;
+	char	*str;
 
 	str = malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!str)
@@ -37,46 +37,66 @@ char	*ft_strdup(char *s)
 	return (str);
 }
 
-int	get_index_backslash_n(char *s)
+char	*ft_strjoin(char *s1, char *s2)
+{
+	int		i;
+	int		len_s1;
+	int		len_s2;
+	char	*str;
+
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	str = malloc((len_s1 + len_s2 + 1) * sizeof(char));
+	if (!str)
+		return (0);
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
+	i = -1;
+	while (s2[++i])
+		str[len_s1 + i] = s2[i];
+	str[len_s1 + len_s2] = '\0';
+	free(s1);
+	return (str);
+}
+
+char	*ft_strchr(char *s, int c)
 {
 	int	i;
 
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] == '\n')
-			return (i);
+		if (s[i] == (unsigned char)c)
+			return (&s[i]);
 	}
-	return (i);
+	return (0);
 }
 
-char	*ft_strcat(char *dst, char *src, int index)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
-	int	i;
-	int	len_d;
+	char			*res;
+	size_t			i;
+	size_t			j;
+	unsigned int	to_malloc;
 
-	len_d = ft_strlen(dst);
+	if (!s)
+		return (0);
+	if ((unsigned int)ft_strlen(s) < start)
+		return (ft_strdup(""));
+	to_malloc = ft_strlen(s + start);
+	if (to_malloc > len)
+		to_malloc = len;
+	res = malloc((to_malloc + 1) * sizeof(char));
+	if (!res)
+		return (0);
 	i = -1;
-	while (src[++i] && i < index)
-		dst[len_d + i] = src[i];
-	return (dst);
-}
-
-char	*ft_strjoin(char *dst, char *src, int index)
-{
-	char	*tmp;
-	int		len;
-
-	len = ft_strlen(dst);
-	tmp = ft_strdup(dst);
-	if (!tmp)
-		return (0);
-	free(dst);
-	len += index + 1;
-	dst = malloc((len + 1) * sizeof(char));
-	if (!dst)
-		return (0);
-	ft_strcat(dst, tmp, BUFFER_SIZE);
-	ft_strcat(dst, src, index);
-	return (dst);
+	j = 0;
+	while (s[++i])
+	{
+		if (i >= start && j < len)
+			res[j++] = s[i];
+	}
+	res[j] = '\0';
+	return (res);
 }
