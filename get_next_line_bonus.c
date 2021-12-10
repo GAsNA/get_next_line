@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rleseur <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 12:48:26 by rleseur           #+#    #+#             */
-/*   Updated: 2021/12/10 16:51:41 by rleseur          ###   ########.fr       */
+/*   Updated: 2021/12/10 16:47:27 by rleseur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	get_read(int fd, char **mem)
 {
@@ -77,7 +77,7 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int	main(int ac, char **av)
+/*int	main(int ac, char **av)
 {
 	char	*str;
 	int		fd;
@@ -90,4 +90,4 @@ int	main(int ac, char **av)
 		free(str);
 	}
 	return (0);
-}
+}*/
