@@ -6,7 +6,7 @@
 /*   By: rleseur <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 12:48:26 by rleseur           #+#    #+#             */
-/*   Updated: 2021/12/10 16:47:27 by rleseur          ###   ########.fr       */
+/*   Updated: 2021/12/14 13:10:07 by rleseur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ char	*get_next_line(int fd)
 	int			size;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	if (read(fd, "", 0) == -1)
 		return (0);
 	if (!mem[fd])
 		mem[fd] = ft_strdup("");
