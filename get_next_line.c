@@ -6,7 +6,7 @@
 /*   By: rleseur <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 12:48:26 by rleseur           #+#    #+#             */
-/*   Updated: 2021/12/10 16:51:41 by rleseur          ###   ########.fr       */
+/*   Updated: 2021/12/17 09:37:50 by rleseur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,39 @@ char	*get_next_line(int fd)
 	char		*str;
 	int			size;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1025 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!mem[fd])
 		mem[fd] = ft_strdup("");
 	size = get_read(fd, &mem[fd]);
 	if (size == 0 && !mem[fd][0])
+	{
+		free(mem[fd]);
 		return (0);
+	}
 	get_line(&str, &mem[fd]);
 	return (str);
 }
 
-int	main(int ac, char **av)
+/*int	main(int ac, char **av)
 {
 	char	*str;
 	int		fd;
+	int		fd2;
 
 	(void) ac;
+//	(void) av;
 	fd = open(av[1], O_RDONLY);
+	fd2 = 55555;
 	while ((str = get_next_line(fd)))
 	{
 		printf("%s", str);
 		free(str);
 	}
+	while ((str = get_next_line(fd2)))
+	{
+		printf("%s", str);
+		free(str);
+	}
 	return (0);
-}
+}*/
