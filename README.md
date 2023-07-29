@@ -1,4 +1,4 @@
-# Get_Next_line
+# Get_Next_Line
 
 A little function to read line from a file.
 
